@@ -1,6 +1,6 @@
 {
   "definitions": {
-    "accordion": true,
+    "accordion": false,
     "ad": false,
     "api": false,
     "breadcrumb": false,
@@ -46,7 +46,7 @@
     "step": false,
     "sticky": false,
     "tab": false,
-    "table": true,
+    "table": false,
     "transition": true,
     "visibility": false,
     "visit": false

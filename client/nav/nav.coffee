@@ -1,3 +1,9 @@
+Template.nav.onCreated ->
+    self = @
+    self.autorun ->
+        self.subscribe 'me'
+
+
 
 Template.nav.events
     'click #logout': -> AccountsTemplates.logout()
