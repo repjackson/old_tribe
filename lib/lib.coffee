@@ -1,5 +1,5 @@
 @Tags = new Meteor.Collection 'tags'
-@Docs = new Meteor.Collection 'docs'
+@Tribe_tags = new Meteor.Collection 'tribe_tags'
 
 
 FlowRouter.route '/',
@@ -7,7 +7,14 @@ FlowRouter.route '/',
     action: ->
         BlazeLayout.render 'layout', 
             cloud: 'cloud'
-            main: 'people'
+            main: 'all_people'
+
+FlowRouter.route '/tribe',
+    name: 'tribe'
+    action: ->
+        BlazeLayout.render 'layout', 
+            cloud: 'tribe_cloud'
+            main: 'tribe_people'
 
 
 FlowRouter.route '/profile/edit/', action: (params) ->

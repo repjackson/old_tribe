@@ -1,10 +1,3 @@
-Docs.allow
-    insert: (userId, doc)-> doc.authorId is Meteor.userId()
-    update: (userId, doc)-> doc.authorId is Meteor.userId()
-    remove: (userId, doc)-> doc.authorId is Meteor.userId()
-
-
-
 Meteor.users.allow
     update: (userId, doc, fields, modifier) ->
         # console.log 'user ' + userId + 'wants to modify doc' + doc._id
@@ -20,7 +13,6 @@ Cloudinary.config
 
 
 
-
 Meteor.publish 'me', -> 
     Meteor.users.find @userId,
         fields: 
@@ -28,8 +20,6 @@ Meteor.publish 'me', ->
             tags: 1
             profile: 1
 
-# Meteor.publish 'usernames', () -> 
-#     Meteor.users.find()
 
 
 Meteor.publish 'tags', (selected_tags)->
@@ -58,6 +48,35 @@ Meteor.publish 'tags', (selected_tags)->
 
     self.ready()
     
+Meteor.publish 'tribe_tags', (selected_tags)->
+    self = @
+    me = Meteor.users.findOne @userId
+    match = {}
+    if selected_tags.length > 0 then match.tags = $all: selected_tags
+    match._id = 
+        $ne: @userId
+        $in: me.tribe
+            
+    cloud = Meteor.users.aggregate [
+        { $match: match }
+        { $project: tags: 1 }
+        { $unwind: "$tags" }
+        { $group: _id: '$tags', count: $sum: 1 }
+        { $match: _id: $nin: selected_tags }
+        { $sort: count: -1, _id: 1 }
+        { $limit: 20 }
+        { $project: _id: 0, name: '$_id', count: 1 }
+        ]
+
+    # console.log 'cloud, ', cloud
+    cloud.forEach (tag, i) ->
+        self.added 'tribe_tags', Random.id(),
+            name: tag.name
+            count: tag.count
+            index: i
+
+    self.ready()
+    
 
 
 Meteor.publish 'people', (selected_tags)->
@@ -65,6 +84,21 @@ Meteor.publish 'people', (selected_tags)->
     # if selected_tags.length > 0 then match.tags = $all: selected_tags
     match.tags = $all: selected_tags
     match._id = $ne: @userId
+    Meteor.users.find match,
+        fields: 
+            tribe: 1
+            profile: 1
+            tags: 1
+
+Meteor.publish 'tribe_people', (selected_tags)->
+    match = {}
+    # if selected_tags.length > 0 then match.tags = $all: selected_tags
+    match.tags = $all: selected_tags
+    me = Meteor.users.findOne @userId
+
+    match._id = 
+        $ne: @userId
+        $in: me.tribe
     Meteor.users.find match,
         fields: 
             tribe: 1
