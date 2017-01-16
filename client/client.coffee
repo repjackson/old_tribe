@@ -2,8 +2,6 @@
 
 Template.cloud.onCreated ->
     @autorun -> Meteor.subscribe 'tags', selected_tags.array()
-    @autorun -> Meteor.subscribe 'me'
-    # @autorun -> Meteor.subscribe 'usernames'
 
 
 Accounts.ui.config

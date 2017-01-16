@@ -8,4 +8,4 @@ Template.person.events
         if @valueOf() in selected_tags.array() then selected_tags.remove @valueOf() else selected_tags.push @valueOf()
         
 Template.person.helpers
-    tag_class: -> if @valueOf() in selected_tags.array() then 'teal' else ''
+    tag_class: -> if @valueOf() in selected_tags.array() then 'active' else ''
