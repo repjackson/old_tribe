@@ -1,13 +1,12 @@
-.ui.inverted.pointing.menu
+.ui.inverted.borderless.pointing.menu
     .ui.container
         a.ui.inverted.header.item(href='/') 
-            i.users.icon
-            |All
-        a.ui.inverted.header.item(href='/tribe') 
-            i.fire.icon
-            |Tribe
+            |tribe
         .right.menu
             if currentUser
+                a#add.item Add
+                a.icon.item(href="/dashboard" class="{{isActivePath '/dashboard'}}")
+                    | #{currentUser.credits} credits
                 a.icon.item(href="/messages" class="{{isActivePath '/messages'}}")
                     i.large.envelope.icon
                 a.item(href="/profile/edit" class="{{isActivePath '/profile/edit'}}")

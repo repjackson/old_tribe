@@ -5,6 +5,24 @@ Meteor.users.allow
             # console.log 'user allowed to modify own account'
             true
 
+
+Accounts.onCreateUser (options, user) ->
+    user.credits = 10
+    user
+
+Meteor.publish 'me', -> 
+    Meteor.users.find @userId,
+        fields: 
+            credits: 1
+
+Meteor.publish 'person', (user_id)-> 
+    Meteor.users.find user_id,
+        fields: 
+            credits: 1
+
+
+
+
 Cloudinary.config
     cloud_name: 'facet'
     api_key: Meteor.settings.cloudinary_key
@@ -12,70 +30,6 @@ Cloudinary.config
 
 
 
-
-Meteor.publish 'me', -> 
-    Meteor.users.find @userId,
-        fields: 
-            tribe: 1
-            tags: 1
-            profile: 1
-
-
-
-Meteor.publish 'tags', (selected_tags)->
-    self = @
-    match = {}
-    if selected_tags.length > 0 then match.tags = $all: selected_tags
-    match._id = $ne: @userId
-
-
-    cloud = Meteor.users.aggregate [
-        { $match: match }
-        { $project: tags: 1 }
-        { $unwind: "$tags" }
-        { $group: _id: '$tags', count: $sum: 1 }
-        { $match: _id: $nin: selected_tags }
-        { $sort: count: -1, _id: 1 }
-        { $limit: 20 }
-        { $project: _id: 0, name: '$_id', count: 1 }
-        ]
-    # console.log 'cloud, ', cloud
-    cloud.forEach (tag, i) ->
-        self.added 'tags', Random.id(),
-            name: tag.name
-            count: tag.count
-            index: i
-
-    self.ready()
-    
-Meteor.publish 'tribe_tags', (selected_tags)->
-    self = @
-    me = Meteor.users.findOne @userId
-    match = {}
-    if selected_tags.length > 0 then match.tags = $all: selected_tags
-    match._id = 
-        $ne: @userId
-        $in: me.tribe
-            
-    cloud = Meteor.users.aggregate [
-        { $match: match }
-        { $project: tags: 1 }
-        { $unwind: "$tags" }
-        { $group: _id: '$tags', count: $sum: 1 }
-        { $match: _id: $nin: selected_tags }
-        { $sort: count: -1, _id: 1 }
-        { $limit: 20 }
-        { $project: _id: 0, name: '$_id', count: 1 }
-        ]
-
-    # console.log 'cloud, ', cloud
-    cloud.forEach (tag, i) ->
-        self.added 'tribe_tags', Random.id(),
-            name: tag.name
-            count: tag.count
-            index: i
-
-    self.ready()
     
 
 
@@ -86,28 +40,64 @@ Meteor.publish 'people', (selected_tags)->
     match._id = $ne: @userId
     Meteor.users.find match,
         fields: 
-            tribe: 1
             profile: 1
-            tags: 1
+            credits: 1
 
-Meteor.publish 'tribe_people', (selected_tags)->
+
+
+
+
+Docs.allow
+    insert: (userId, doc) -> doc.author_id is userId
+    update: (userId, doc) -> doc.author_id is userId or Roles.userIsInRole(userId, 'admin')
+    remove: (userId, doc) -> doc.author_id is userId or Roles.userIsInRole(userId, 'admin')
+
+
+
+
+Meteor.publish 'docs', (selected_tags, filter)->
+
+    self = @
     match = {}
     # if selected_tags.length > 0 then match.tags = $all: selected_tags
     match.tags = $all: selected_tags
-    me = Meteor.users.findOne @userId
+    
+    if filter then match.type = filter
 
-    match._id = 
-        $ne: @userId
-        $in: me.tribe
-    Meteor.users.find match,
-        fields: 
-            tribe: 1
-            profile: 1
-            tags: 1
+    Docs.find match,
+        limit: 5
+        
 
+Meteor.publish 'doc', (id)->
+    Docs.find id
+    
+    
+    
+Meteor.publish 'tags', (selected_tags, filter)->
+    self = @
+    match = {}
+    if selected_tags.length > 0 then match.tags = $all: selected_tags
+    if filter then match.type = filter
 
+    cloud = Docs.aggregate [
+        { $match: match }
+        { $project: "tags": 1 }
+        { $unwind: "$tags" }
+        { $group: _id: "$tags", count: $sum: 1 }
+        { $match: _id: $nin: selected_tags }
+        { $sort: count: -1, _id: 1 }
+        { $limit: 20 }
+        { $project: _id: 0, name: '$_id', count: 1 }
+        ]
 
+    # console.log 'filter: ', filter
+    # console.log 'cloud: ', cloud
 
-Meteor.publish 'user_profile', ->
-    Meteor.users.find @userId
+    cloud.forEach (tag, i) ->
+        self.added 'tags', Random.id(),
+            name: tag.name
+            count: tag.count
+            index: i
+
+    self.ready()
 
