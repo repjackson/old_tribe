@@ -59,8 +59,8 @@ Meteor.publish 'docs', (selected_tags, filter)->
 
     self = @
     match = {}
-    # if selected_tags.length > 0 then match.tags = $all: selected_tags
-    match.tags = $all: selected_tags
+    if selected_tags.length > 0 then match.tags = $all: selected_tags
+    # match.tags = $all: selected_tags
     
     if filter then match.type = filter
 

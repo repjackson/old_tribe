@@ -1,18 +1,20 @@
 with doc
     .ui.container
-        // .image
-        //     img.ui.centered.image(src="{{c.url image_id height=400 width=800 background='white' crop='lpad'}}")
-        //     .overlay-text 
-        //         h1 #{title}
-        .ui.hidden.divider
+        .image
+            img.ui.centered.image(src="{{c.url image_id height=400 width=800 background='white' crop='lpad'}}")
+        h1.ui.header #{title}
         .ui.divided.stackable.grid
             .ten.wide.column
-                .description
-                    |!{description}
-            .five.wide.column
-                h2.ui.header Tags
                 each tags
-                    .ui.basic.label #{this}
+                    .ui.large.basic.label #{this}
+                .ui.padded.basic.segment
+                    |!{description}
+                +doc_transactions
+            .five.wide.column
+                h2.ui.header Price
+                | #{price} credits
+                div 
+                    +buy_button
                 if can_edit
                     a(href="/edit/#{_id}").ui.basic.button
                         i.pencil.icon

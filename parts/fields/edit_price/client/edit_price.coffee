@@ -3,5 +3,7 @@ Template.edit_price.events
         doc_id = FlowRouter.getParam('doc_id')
         price = $('#price').val()
 
+        int = parseInt price
+
         Docs.update doc_id,
-            $set: price: price
+            $set: price: int
