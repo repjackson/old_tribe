@@ -15,13 +15,6 @@ Meteor.publish 'me', ->
         fields: 
             credits: 1
 
-Meteor.publish 'person', (user_id)-> 
-    Meteor.users.find user_id,
-        fields: 
-            credits: 1
-
-
-
 
 Cloudinary.config
     cloud_name: 'facet'

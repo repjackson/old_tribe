@@ -1,0 +1,10 @@
+div
+    if currentUser
+        if can_buy
+            #buy.ui.green.fluid.button
+                |Buy 
+        else
+            .ui.disabled.basic.button Not Enough Credits
+    else
+        .ui.disabled.basic.button Log In to Buy
+        

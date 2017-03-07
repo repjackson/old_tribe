@@ -9,6 +9,9 @@
         each tags
             .ui.compact.tiny.circular.button.doc_tag(class=doc_tag_class) #{this}
     .extra.content
+        div Price: #{price} credits
+        div #{points} points
+    .extra.content
         a.ui.icon.basic.button(href="/view/#{_id}") 
             i.unhide.icon
         if can_edit

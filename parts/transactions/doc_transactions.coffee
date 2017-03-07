@@ -1,15 +1,27 @@
 if Meteor.isClient
     Template.doc_transactions.onCreated -> 
-        @autorun -> Meteor.subscribe('doc_transactions', FlowRouter.getParam('doc_id'))
+        Meteor.subscribe('doc_transactions', FlowRouter.getParam('doc_id'))
 
     Template.doc_transactions.helpers
         transactions: -> 
             Transactions.find { }
     
-        tag_class: -> if @valueOf() in selected_tags.array() then 'primary' else 'basic'
-
+    Template.transaction.helpers
+        can_vote: ->
+            @from_id is Meteor.userId()
 
 if Meteor.isServer
-    Meteor.publish 'doc_transactions', (doc_id)->
-        Transactions.find
-            doc_id: doc_id
+    Meteor.publishComposite 'doc_transactions', (doc_id)->
+        {
+            find: ->
+                Transactions.find doc_id: doc_id
+            children: [
+                { find: (transaction) ->
+                    Meteor.users.find { _id: transaction.from_id },
+                        limit: 1
+                        fields: 
+                            profile: 1
+                            username: 1
+                } 
+            ]
+        }

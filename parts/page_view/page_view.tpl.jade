@@ -11,10 +11,10 @@ with doc
                     |!{description}
                 +doc_transactions
             .five.wide.column
-                h2.ui.header Price
-                | #{price} credits
-                div 
-                    +buy_button
+                h4.ui.header Points: #{points}
+                h4.ui.header Price: #{price} credits
+                +buy_button
+                +user_card
                 if can_edit
                     a(href="/edit/#{_id}").ui.basic.button
                         i.pencil.icon

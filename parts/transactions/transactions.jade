@@ -1,8 +1,8 @@
 
 
 template(name='doc_transactions')
-    .ui.header Transaction History
-    .ui.items
+    .ui.horizontal.divider.header Transaction History
+    .ui.divided.items
         each transactions
             +transaction
 
@@ -12,17 +12,9 @@ template(name='doc_transactions')
 template(name='transaction')
     .ui.item
         .content
-                h1.ui.header #{from.username}
-                h1.ui.header #{to.username}
+                h4.ui.header Bought by #{from.username}
             .meta #{when}
-            .meta
-                each tags
-                    .ui.button.tag(class=tag_class) #{this}
-            .description
-                |!{description}
-            if can_edit
-                .edit.ui.icon.circular.basic.button
-                    i.pencil.icon.icon
-            else
-                | by #{author.username} #{when}
-            // +user_blurb
+            if vote
+                |#{vote}
+            if can_vote
+                +voting
