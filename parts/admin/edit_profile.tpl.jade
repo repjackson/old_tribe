@@ -1,16 +1,17 @@
-.ui.segment.text.container
+.ui.basic.segment.text.container
     with person
         .ui.form
             .field
-                if profile.image_id
-                    label Image
-                    .ui.centered.image
-                        img.ui.medium.image(src="{{c.url profile.image_id width=400 height=400 gravity='face' crop='fill'}}")
-                        a#remove_photo.ui.right.corner.link.label
-                            i.remove.red.link.icon
-                else
-                    label Image
-                    input(type='file' name='upload_picture' accept='image/*')
+                .ui.center.aligned.basic.segment
+                    if profile.image_id
+                        // label Image
+                        .ui.center.aligned.image
+                            img.ui.medium.center.aligned.image(src="{{c.url profile.image_id width=400 height=400 gravity='face' crop='fill'}}")
+                            a#remove_photo.ui.right.corner.link.label
+                                i.remove.red.link.icon
+                    else
+                        // label Image
+                        input(type='file' name='upload_picture' accept='image/*')
             .field
                 if profile.google_image
                     label Google Image
@@ -60,13 +61,12 @@
             // .field
             //     label Bio
             //     textarea#bio(rows='5') #{bio}
-            if is_my_profile
-                // p Adding social accounts will create a service link in your profile and fill out any empty profile information.
+            .ui.center.aligned.basic.segment
+                // if is_my_profile
+                    // p Adding social accounts will create a service link in your profile and fill out any empty profile information.
                 .ui.eight.column.grid
                     .eight.wide.column
                         .ui.padded.basic.segment
                             +atForm
-            .field
-                .ui.center.aligned.basic.segment
-                    #save_profile.ui.green.icon.huge.button
-                        i.check.icon
+            // .field
+            //     i.#save_profile.massive.check.link.icon

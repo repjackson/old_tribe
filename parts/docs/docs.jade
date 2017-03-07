@@ -22,7 +22,7 @@ template(name='view')
             .description
                 |!{description}
             if can_edit
-                .edit.ui.icon.circular.basic.button
+                .edit.ui.icon.basic.button
                     i.pencil.icon.icon
             else
                 | by #{author.username} #{when}

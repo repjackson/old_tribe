@@ -4,11 +4,12 @@
             |Tribe
         .right.menu
             if currentUser
-                a#add.item Add
                 a.icon.item(href="/admin" class="{{isActivePath '/admin'}}")
                     | Admin
                 a.icon.item(href="/dashboard" class="{{isActivePath '/dashboard'}}")
                     | #{currentUser.credits} credits
+                a#add.plus.item
+                    i.plus.icon
                 a.icon.item(href="/messages" class="{{isActivePath '/messages'}}")
                     i.envelope.icon
                 a.item(href="/account/profile/edit" class="{{isActivePath '/account/profile/edit'}}")
