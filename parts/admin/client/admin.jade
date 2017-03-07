@@ -2,9 +2,9 @@ template(name='admin_nav')
     .ui.container
         .ui.basic.padded.segment
             .ui.compact.four.item.stackable.menu
-                // a.item(href="/admin/submissions" class="{{isActivePath '/admin/submissions'}}")
-                //     i.comment.outline.icon
-                //     |Contact Form Submissions
+                a.item(href="/admin/submissions" class="{{isActivePath '/admin/submissions'}}")
+                    i.comment.outline.icon
+                    |Contact Form Submissions
                 a.item(href='/admin/users' class="{{isActivePath '/admin/users'}}")
                     i.users.icon
                     |Users
@@ -13,7 +13,4 @@ template(name='admin_nav')
                     |Content                
                 a.item(href='/admin/account' class="{{isActivePath '/admin/account'}}")
                     i.wrench.icon
-                    |Account                
-                a.item(href='/admin/importers' class="{{isActivePath '/admin/importers'}}")
-                    i.cloud.download.icon
-                    |Importers
+                    |Account

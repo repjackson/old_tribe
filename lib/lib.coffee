@@ -1,3 +1,10 @@
+FlowRouter.notFound =
+    subscriptions: ->
+    action: ->
+        BlazeLayout.render 'layout',
+            main: '404'
+
+
 
 AccountsTemplates.configure
     defaultLayout: 'layout'

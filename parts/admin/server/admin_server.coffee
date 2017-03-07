@@ -1,17 +1,7 @@
-
-
-
-Meteor.publish 'hub_users', ->
+Meteor.publish 'all_users', ->
     match = {}
 
     Meteor.users.find match
-    # Docs.find match,
-    #     fields:
-    #         tags: 1
-    #         attendee_ids: 1
-    #         host_id: 1
-    #         date_array: 1
-    #         date: 1
 
 
 Meteor.publish 'all_docs', (selected_content_tags=[])->
@@ -29,20 +19,12 @@ Meteor.publish 'all_tags', (selected_tags)->
     match = {}
     if selected_tags.length > 0 then match.tags = $all: selected_tags
 
-    my_profile = 
-        Docs.findOne 
-            type: 'member_profile'
-            author_id: @userId
-    
-    # console.log my_profile
-    
     cloud = Docs.aggregate [
         { $match: match }
         { $project: "tags": 1 }
         { $unwind: "$tags" }
         { $group: _id: "$tags", count: $sum: 1 }
         { $match: _id: $nin: selected_tags }
-        # { $match: _id: $nin: my_profile.tags }
         { $sort: count: -1, _id: 1 }
         { $limit: 20 }
         { $project: _id: 0, name: '$_id', count: 1 }

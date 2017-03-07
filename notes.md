@@ -1,2 +1,6 @@
-has to work on phone
-has to help the developing world
+so you can send jenny a point 
+cool profile
+voting adds points
+login, buy points with card, pay person
+cash out
+money has legal problems, see how far you can go with points

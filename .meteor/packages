@@ -42,3 +42,7 @@ matb33:collection-hooks
 alanning:roles
 momentjs:moment
 reywood:publish-composite
+raix:handlebar-helpers
+accounts-google
+accounts-twitter
+accounts-facebook

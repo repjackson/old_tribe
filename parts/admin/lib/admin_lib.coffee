@@ -23,9 +23,3 @@ FlowRouter.route '/admin/account', action: (params) ->
         main: 'account'
         
         
-FlowRouter.route '/profile/edit/', action: (params) ->
-    BlazeLayout.render 'layout',
-        # sub_nav: 'account_nav'
-        main: 'edit_profile'
-
-
