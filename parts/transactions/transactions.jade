@@ -1,7 +1,8 @@
 
 
 template(name='doc_transactions')
-    .ui.horizontal.divider.header Transaction History
+    // .ui.horizontal.divider.header 
+    //     i.clock.icon
     .ui.divided.items
         each transactions
             +transaction
@@ -12,7 +13,7 @@ template(name='doc_transactions')
 template(name='transaction')
     .ui.item
         .content
-                h4.ui.header Bought by #{from.username}
+                h4.ui.header #{from.username}
             .meta #{when}
             if vote
                 |#{vote}

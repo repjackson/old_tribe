@@ -6,7 +6,7 @@ if Meteor.isClient
                 title: "Buy for #{self.price} credits?"
                 # text: 'Confirm delete?'
                 type: 'info'
-                animation: true
+                animation: false
                 showCancelButton: true
                 closeOnConfirm: false
                 closeOnCancel: false
